@@ -1,0 +1,44 @@
+<ion-header>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&display=swap');
+    </style>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="myDiv">
+
+      <img class="img" src="https://images.pexels.com/photos/14614153/pexels-photo-14614153.png?auto=compress&cs=tinysrgb&w=600&lazy=load" width="200px"/>
+    
+
+
+
+    </div>
+
+    <h1>ACCESO</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-item lines="full">
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input formControlName="email" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password" required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="primary" expand="block" shape="round">Iniciar sesión</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <ion-button fill="clear" expand="full" shape="round">
+    ¿Has olvidado la contraseña?
+  </ion-button>
+</ion-content>
