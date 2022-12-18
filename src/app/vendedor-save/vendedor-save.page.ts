@@ -18,14 +18,16 @@ export class VendedorSavePage implements OnInit {
   ubigeos: Ubigeo[] = [];
 
   constructor(private fb: FormBuilder,
-              private vendedorService: VendedorService,
+              public vendedorService: VendedorService,
               private ubigeoService: UbigeoService,
               private toastController: ToastController,
               private router: Router) {
   }
 
   ngOnInit() {
+    
     this.initVendedorForm();
+    
     this.listarUbigeos();
   }
 
@@ -43,12 +45,35 @@ export class VendedorSavePage implements OnInit {
       password: [null],
       ubigeo: [null]
     });
-  }
+    if (this.vendedorService.vendedorSelected) {
+      const vendedor = this.vendedorService.vendedorSelected;
+      this.vendedorForm.patchValue({
+        id: vendedor.id,
+        nombre: vendedor.nombre,
+        apellido: vendedor.apellido,
+        dni: vendedor.dni,
+        email: vendedor.email,
+        celular: vendedor.celular,
+        direccion: vendedor.direccion,
+        estado: vendedor.estado,
+        user: vendedor.user,
+        password: vendedor.password,
+        ubigeo: vendedor.ubigeo?.id
+      });
+  }}
 
   listarUbigeos() {
     this.ubigeoService.find().subscribe(res => {
       this.ubigeos = res;
     })
+  }
+
+  save() {
+    if(this.vendedorService.vendedorSelected) {
+      this.updateVendedor();
+    } else {
+      this.registerVendedor();
+    }
   }
 
   registerVendedor() {
@@ -61,6 +86,20 @@ export class VendedorSavePage implements OnInit {
       this.vendedorForm.reset();
       this.showMessage(`Registraste a ${res.nombre} como nuevo vendedor`);
       this.router.navigate(['home']);
+    })
+  }
+
+  updateVendedor() {
+    const vendedor: VendedorDto = this.vendedorForm.value;
+    vendedor.ubigeo = {
+      id: this.vendedorForm.controls['ubigeo'].value
+    }
+    this.vendedorService.update(vendedor).subscribe(res => {
+      
+      this.showMessage('Actualización exitosa');
+      this.router.navigate(['home']);
+      this.vendedorForm.reset();
+      
     })
   }
 
